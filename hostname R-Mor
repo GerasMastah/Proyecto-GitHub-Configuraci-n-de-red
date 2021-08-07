@@ -1,0 +1,94 @@
+hostname R-Mor
+!
+!
+!
+
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+
+!
+!
+!
+!
+!
+!
+!
+!
+ip ssh version 2
+ip domain-name r-mor.com
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 172.16.76.1 255.255.254.0
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 172.16.78.1 255.255.255.128
+ duplex auto
+ speed auto
+!
+
+!
+
+!
+interface Serial0/0/0
+ ip address 10.10.8.5 255.255.255.252
+ clock rate 2000000
+!
+
+!
+interface Serial0/0/1
+ ip address 10.10.5.2 255.255.255.252
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 100
+ log-adjacency-changes
+ passive-interface GigabitEthernet0/0/0
+ passive-interface GigabitEthernet0/0/1
+ network 10.10.5.0 0.0.0.3 area 0
+ network 10.10.8.4 0.0.0.3 area 0
+ network 172.16.76.0 0.0.3.255 area 0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list extended sl_def_acl
+ deny tcp any any eq telnet
+ deny tcp any any eq www
+ deny tcp any any eq 22
+ permit tcp any any eq 22
+!
+banner login #
+--------------------------------------------------------------------------------
+================================================================================
+                             Alto ahi Rufian
+================================================================================
+--------------------------------------------------------------------------------
+#
+banner motd #
+================================================================================
+                            GWS
+================================================================================
+#
